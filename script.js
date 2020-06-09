@@ -26,27 +26,46 @@ function divide(dividend, divisor) {
 }
 
 function operate(operator, a, b) {
-    if(operator == "add") {
+    console.log(`${a} ${operator} ${b}`);
+    if(operator == "+") {
         return add(a, b);
     }
-    if(operator == "subtract") {
+    if(operator == "-") {
         return subtract(a, b);
     }
-    if(operator == "multiply") {
+    if(operator == "*") {
         return multiply(a, b);
     }
-    if(operator == "divide") {
+    if(operator == "/") {
         return divide(a, b);
     }
 }
 
-function evaluate(str, disp) {
+function evaluate(str) {
     let nums = str.split(/[^\d.]/);
+    //first pass (multiplication & division)
+    let i = 0;
+    while(i < opSequence.length) {
+        if(opSequence[i] == "*" || opSequence[i] == "/") {
+            let temp = operate(opSequence.splice(i, 1), nums[i], nums[i+1]);
+            nums[i+1] = temp.toString();
+            nums.splice(i, 1);
+        } else {
+            i++;
+        }
+    }
 
-    disp.textContent = -1;
-    opSequence = [];
-    lastOpeIndex = -1;
-    hasDecimal = false;
+    i = 0;
+    while(opSequence.length > 0) {
+        if(opSequence[i] == "+" || opSequence[i] == "-") {
+            let temp = operate(opSequence.splice(i, 1), +nums[i], +nums[i+1]);
+            nums[i+1] = temp;
+            nums.splice(i, 1);
+        } else {
+            i++;
+        }
+    }
+    return Math.round(nums[0] * 100000000) / 100000000;
 }
 
 function display(val, disp) {
@@ -68,7 +87,10 @@ function display(val, disp) {
             hasDecimal = false;
         }
     } else {
-        evaluate(disp.textContent, disp);
+        disp.textContent = evaluate(disp.textContent);
+        opSequence = [];
+        lastOpeIndex = -1;
+        hasDecimal = false;
     }
 }
 
