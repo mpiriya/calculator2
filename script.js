@@ -70,7 +70,7 @@ function evaluate(str) {
             i++;
         }
     }
-    return Math.round(nums[0] * 100000000) / 100000000;
+    return nums[0].toString().substring(0, 9);
 }
 
 function display(val, disp) {
