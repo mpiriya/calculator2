@@ -24,7 +24,6 @@ function divide(dividend, divisor) {
 }
 
 function operate(operator, a, b) {
-    console.log(`${a} ${operator} ${b}`);
     if(operator == "+") {
         return add(a, b);
     }
@@ -75,8 +74,8 @@ function evaluate(str) {
 }
 
 function display(val, disp) {
-    if(disp.textContent.length == 9 || 
-        (disp.textContent.length == 10 && disp.textContent.indexOf(".") != -1)) {
+    if(disp.textContent.length >= 9 || 
+        (disp.textContent.length >= 10 && disp.textContent.indexOf(".") != -1)) {
             return;
     }
 
@@ -88,7 +87,6 @@ function display(val, disp) {
             hasDecimal = true;
         }
     } else if(val != "=") {
-        console.log(val);
         if(!OPS.includes(disp.textContent.slice(-1))) { 
             disp.textContent += val;
             lastOpIndex = disp.textContent.length - 1;
@@ -116,9 +114,11 @@ window.onload = () => {
         
         if(!isNaN(+key) || OPS.indexOf(key) != -1 || key == ".") {
             display(key, disp);
-            console.log(`num displayed`);
         }
         if(key == "Backspace") {
+            if(disp.textContent.slice(-1) == ".") {
+                hasDecimal = false;
+            }
             disp.textContent = disp.textContent.substring(0, disp.textContent.length - 1);
         }
         if(key == "Enter") {
@@ -135,6 +135,9 @@ window.onload = () => {
     });
 
     document.querySelector("#backspace").addEventListener("click", () => {
+        if(disp.textContent.slice(-1) == ".") {
+            hasDecimal = false;
+        }
         disp.textContent = disp.textContent.substring(0, disp.textContent.length - 1);
     });
 }
