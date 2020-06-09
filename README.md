@@ -4,6 +4,10 @@
 
 - all functionality added in terms of proper equation writing
 
+- can evaluate
+
+- is a calculator
+
 ## TODO
 
-- evaluate function which follows PEMDAS, but really more like MDAS
+- make look pretty :)
