@@ -4,6 +4,6 @@
 
 - all functionality added in terms of proper equation writing
 
-# TODO
+## TODO
 
 - evaluate function which follows PEMDAS, but really more like MDAS
