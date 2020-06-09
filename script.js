@@ -50,7 +50,10 @@ function evaluate(str) {
     let i = 0;
     while(i < opSequence.length && opSequence.length > 0) {
         if(opSequence[i] == "*" || opSequence[i] == "/") {
-            let temp = operate(opSequence.splice(i, 1), nums[i], nums[i+1]);
+            let temp = operate(opSequence.splice(i, 1), nums[i], nums[i+1])
+            if(temp == "Error") {
+                return "Error";
+            }
             nums[i+1] = temp.toString();
             nums.splice(i, 1);
         } else {
@@ -119,7 +122,9 @@ window.onload = () => {
             disp.textContent = disp.textContent.substring(0, disp.textContent.length - 1);
         }
         if(key == "Enter") {
-            display("=", disp);
+            disp.textContent = evaluate(disp.textContent);
+            lastOpIndex = -1;
+            hasDecimal = false;
         }
     })
 
