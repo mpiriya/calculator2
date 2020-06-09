@@ -1,8 +1,6 @@
 let hasDecimal = false; //bool
-let currNum = 0;
 let lastOpIndex = -1;
 const OPS = ["+", "-", "*", "/"]
-let opSequence = [];
 
 function add(a, b) {
     return a + b;
@@ -43,9 +41,11 @@ function operate(operator, a, b) {
 
 function evaluate(str) {
     let nums = str.split(/[^\d.]/);
+    let opSequence = str.split(/[\d.\s]/);
+    opSequence = opSequence.filter(item => item != "");
     //first pass (multiplication & division)
     let i = 0;
-    while(i < opSequence.length) {
+    while(i < opSequence.length && opSequence.length > 0) {
         if(opSequence[i] == "*" || opSequence[i] == "/") {
             let temp = operate(opSequence.splice(i, 1), nums[i], nums[i+1]);
             nums[i+1] = temp.toString();
@@ -59,7 +59,7 @@ function evaluate(str) {
     while(opSequence.length > 0) {
         if(opSequence[i] == "+" || opSequence[i] == "-") {
             let temp = operate(opSequence.splice(i, 1), +nums[i], +nums[i+1]);
-            nums[i+1] = temp;
+            nums[i+1] = temp.toString();
             nums.splice(i, 1);
         } else {
             i++;
@@ -71,7 +71,6 @@ function evaluate(str) {
 function display(val, disp) {
 
     if(!isNaN(+val)) {
-        //edit currNum
         disp.textContent += val;
     } else if(val == ".") {
         if(!hasDecimal) {
@@ -81,15 +80,13 @@ function display(val, disp) {
     } else if(val != "=") {
         console.log(val);
         if(!OPS.includes(disp.textContent.slice(-1))) { 
-            opSequence.push(val);
             disp.textContent += val;
             lastOpIndex = disp.textContent.length - 1;
             hasDecimal = false;
         }
     } else {
         disp.textContent = evaluate(disp.textContent);
-        opSequence = [];
-        lastOpeIndex = -1;
+        lastOpIndex = -1;
         hasDecimal = false;
     }
 }
@@ -103,8 +100,26 @@ window.onload = () => {
         });
     }
 
+
+    document.addEventListener("keydown", event => {
+        let key = event.key;
+        
+        if(!isNaN(+key) || OPS.indexOf(key) != -1 || key == ".") {
+            display(key, disp);
+            console.log(`num displayed`);
+        }
+        if(key == "Backspace") {
+            disp.textContent = disp.textContent.substring(0, disp.textContent.length - 1);
+        }
+        if(key == "Enter") {
+            display("=", disp);
+        }
+    })
+
     document.querySelector("#clear").addEventListener("click", () => {
         disp.textContent = "";
+        lastOpIndex = -1;
+        hasDecimal = false;
     });
 
     document.querySelector("#backspace").addEventListener("click", () => {
