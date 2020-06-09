@@ -17,15 +17,17 @@ body {
         "content content content content"
         "content content content content";
     font-size: 90px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .display {
     background-color: rgb(221, 221, 221);
+    font-family: 'Roboto', sans-serif;
     grid-area: display;
     height: 140px;
     width: 500px;
     text-align: right;
-    font-size: 90px;
+    font-size: 97px;
     margin-bottom: 5px;
 }
 

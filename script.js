@@ -40,6 +40,9 @@ function operate(operator, a, b) {
 }
 
 function evaluate(str) {
+    if(OPS.indexOf(str.substring(0, 1)) != -1 || OPS.indexOf(str.substring(str.length - 1)) != -1)
+        return "Error";
+
     let nums = str.split(/[^\d.]/);
     let opSequence = str.split(/[\d.\s]/);
     opSequence = opSequence.filter(item => item != "");
@@ -69,6 +72,10 @@ function evaluate(str) {
 }
 
 function display(val, disp) {
+    if(disp.textContent.length == 9 || 
+        (disp.textContent.length == 10 && disp.textContent.indexOf(".") != -1)) {
+            return;
+    }
 
     if(!isNaN(+val)) {
         disp.textContent += val;
